@@ -17,15 +17,16 @@ Before we get started, lets show you how to compile the code examples shown in t
 
 To install Rust on Windows:
 
-1. Download and run the latest stable installer (.exe) from the [Rust website][install].
+1. Download and run the latest nightly build installer (.exe) from the [Rust website][install].
 
 To install Rust on OS X:
 
-1. Download and run the latest stable installer (.pkg) from the [Rust website][install].
+1. Download and run the latest nightly build installer (.pkg) from the [Rust website][install].
 
 To install Rust on Linux:
 
-1. Download and extract the latest stable binaries (.tar.gz) from the [Rust website][install].
+1. Download and extract the latest nightly build binaries (.tar.gz) from the [Rust website][install].
+
 2. Run the `./install.sh` inside the directory.  
 
 There are more complete [installation intructions][install-wiki] on the wiki.
@@ -294,7 +295,7 @@ This annotation is an example of a Rust *attribute*. Rust attributes generally h
 [attributes]: FIXME
 [deriving]: FIXME
 
-Now that we have indicated that `Point` values should be copied and not moved, we can continue using them even after they have been passed as parameters or stored into data structures:
+Now that we have indicated that `Point` values should be copied not moved, we can continue using them even after they have been passed as parameters or stored into data structures:
 
 ~~~~
 # struct Point {
@@ -319,7 +320,57 @@ fn main() {
 
 # Borrowing
 
-Ownership is not the right tool when you just want temporary access to data:
+In the previous section we have a function that takes a boxed array of pointers as an agument and then returns it to the caller so it can be used afterwords.
+
+~~~~{.notrust}
+fn draw_polygons(polygons: ~[Point]) -> ~[Point] {
+    ...
+    return polygons;
+}
+~~~~
+
+This design pattern does work, but is not the correct Rust way of doing things. In the example, `draw_polygons()` just needs to *use* the `polygons` array temporarily, it does not need to *own* it, even for only a short while. 
+
+The way to express this in a more Rust-like way is to *borrow* a reference, which is a temporary pointer to data owned by somebody else. Rewriting `draw_polygons()` to borrow `polygons`:
+
+~~~~{.notrust}
+fn draw_polygons(polygons: &[Point]) {
+    ...
+}
+~~~~
+
+The type of `polygons` is now a reference to an array of Points, `&[Point]`, the `&` operator denotes a reference. As `polygons` is now a reference to the original array, it is not freed when `draw_polygons()` returns.
+
+<!-- FIXME Add example from etherpad -->
+
+The `&` operator can take the address of more than just local variables, you can also borrow individual fields within a structure or elements of an array:
+
+<!-- What is pass, why do we need it? -->
+
+~~~~
+    pass(&points[2]); // creating a reference to an array element
+    
+    fn print_point(point: &Point) {
+        let copy = *point; // * operator
+        print((*point).x); // * operator, oh, awkward
+        print(point.y);    // autoderef -- compiler adds *
+    }
+
+    fn update(p: &mut int) { // (2) mutability
+        *p += 1; // * operator, autoderef
+    }
+        
+    fn main() {
+        let mut x = 3; // (1) let mut declarations
+        update(&mut x);
+    }
+~~~~
+
+The [advanced lifetime guide][lifetimes] covers more borrowing topics such as returning references, storing references in structs and how borrowing affects the heap.
+
+[lifetimes]: http://static.rust-lang.org/doc/master/guide-lifetimes.html
+ 
+<!-- Ownership is not the right tool when you just want temporary access to data: -->
 
 <!--
 
@@ -371,7 +422,5 @@ fn get_point(p: &Point) -> int {
 # Mutability
 
 # Lifetimes 
-
-# Vectors vs. Slices 
 
 # Structs, enums, and pattern matching
