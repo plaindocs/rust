@@ -108,6 +108,19 @@ Looping over code is familiar to every programmer, in Rust this is achieved with
 
 `break` exits from loops, and `continue` exits the current iteration and continues with the next. 
 
+The simplest type is `loop`, which loops forever until a `break` exits the loop. 
+
+~~~
+fn main() {
+    /* A simple loop */
+    loop {
+        //Loops until a break
+        break;
+        }
+    }
+}
+~~~
+
 More information on [while loops][loops] and [for loops][for].
 
 [loops]: http://doc.rust-lang.org/master/rust.html#while-loops
@@ -120,21 +133,6 @@ More information on [while loops][loops] and [for loops][for].
 ~~~
 for n in range(0, 5) {
     println!("{}", n);
-}
-~~~
-
-## Loop loops
-
-The simplest type is `loop`, which loops forever until a `break` exits the loop. 
-
-~~~
-fn main() {
-    /* A simple loop */
-    loop {
-        //Loops until a break
-        break;
-        }
-    }
 }
 ~~~
 
