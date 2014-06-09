@@ -121,11 +121,6 @@ fn main() {
 }
 ~~~
 
-More information on [while loops][loops] and [for loops][for].
-
-[loops]: http://doc.rust-lang.org/master/rust.html#while-loops
-[for]: http://doc.rust-lang.org/master/rust.html#for-expressions
-
 ## For loops
 
 `for` loops iterate over a range of numbers.
@@ -135,6 +130,10 @@ for n in range(0, 5) {
     println!("{}", n);
 }
 ~~~
+
+More information on [for loops][for].
+
+[for]: http://doc.rust-lang.org/master/rust.html#for-expressions
 
 ## While loops
 
@@ -148,6 +147,10 @@ while count < 10 {
     count += 1;
 }
 ~~~
+
+More information on [while loops][loops].
+
+[loops]: http://doc.rust-lang.org/master/rust.html#while-loops
 
 # Macros
 
