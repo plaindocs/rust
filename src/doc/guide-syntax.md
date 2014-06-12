@@ -81,6 +81,21 @@ The Rust reference to [enumerations][enum].
 
 [enum]: http://doc.rust-lang.org/master/rust.html#enumerations
 
+# External crate declarations
+
+An `extern crate` declaration specifies a dependency on an external library (or crate in Rust terms). The dependency is resolved at compile time.
+
+~~~
+extern crate std; // equivalent to: extern crate std = "std";
+
+extern crate ruststd = "std"; // linking to 'std' under another name
+~~~
+
+More [examples of `extern crate`][crates] and a [list of available libraries][libs].
+
+[crates]: http://doc.rust-lang.org/master/rust.html#extern-crate-declarations
+[libs]: http://doc.rust-lang.org/master/index.html#libraries
+
 # Functions
 
 Functions in Rust are introduced with the `fn` keyword, optional arguments are specified within parenthesis as comma separated `name: type` pairs, and `->` indicates the return type. You can ommit the return type for functions that do not return a value. Functions return the top level expression (note the return expression is not terminated with a semi colon).
@@ -166,6 +181,23 @@ Read the guide to [writing macros][guide-macro] for more information.
 
 [guide-macro]: http://doc.rust-lang.org/0.10/guide-macros.html
 
+# Match
+
+Rust's `match` construct is a generalized, cleaned-up version of C's switch construct. It takes a value and a number of 'arms' of code, each labelled with a pattern. When the value matches the pattern, that arm (*only* that arm) is executed. Match constructs must match every case, ie if you are not matching an enum you must include a final wildcard (`_`) 'catchall' arm. You can combine patterns using the pipe symbol (`|`), and match ranges using (`..`).
+
+~~~
+match my_number {
+  0     => println!("zero"),
+  1 | 2 => println!("one or two"),
+  3..10 => { println!("three to ten") }
+  _     => { println!("something else") }
+}
+~~~
+
+The Rust [`match` reference][match].
+
+[match]: http://doc.rust-lang.org/master/rust.html#match-expressions
+
 # Operators
 
 Rust's set of operators contains very few surprises. Arithmetic is done with
@@ -226,7 +258,7 @@ Read more information on [formating and printing][fmt].
 
 # Structs 
 
-Structs are collections of data types, and use a syntax similar to structs in C `struct Name { field1: type1, field2: type2, field3: type3 [, ...] } `
+Structs are collections of data types, and use a syntax similar to structs in C `struct Name { field1: type1, field2: type2, field3: type3 [, ...] } `.
 
 ~~~
 struct Point {
@@ -236,7 +268,7 @@ struct Point {
 
 let mypoint = Point {x: 1.0, y: 2.0};
 
-//Access individual fields using the dot operator.
+/Access individual fields using the dot operator.
 println! (mypoint.x); 
 ~~~
 
@@ -245,6 +277,10 @@ All fields of a struct are mutable if the struct itself is mutable.
 The Rust reference to [structs][structs].
 
 [structs]: http://doc.rust-lang.org/master/rust.html#structures
+
+# Switch statements
+
+The closest equivalent to C's `switch` construct is Rust's [`match` construct](#match). 
 
 # Testing
 
@@ -263,6 +299,12 @@ fn testing_something() {
 
 Run tests using `rustc --test foo.rs` and compile your program without the test code using `rustc foo.rs`. More information on [testing][testing].
 
+# Traits
+
+A trait describes a set of method types, and may include default implementations of methods, written in terms of some unknown [self type][self].
+
+[self]: http://doc.rust-lang.org/master/rust.html#self-types
+
 # Tuples
 
 Tuples in Rust behave exactly like structs, except that their fields do not
@@ -280,6 +322,23 @@ match mytup {
 The Rust reference to [structs][structs].
 
 [structs]: http://doc.rust-lang.org/master/rust.html#structures
+
+# Use 
+
+A `use` declaration binds names from specified module to a local name, shortening the path required to refer to the module item. It does *not* declare linkage dependency with [external crates][crates]. 
+
+~~~
+use std::num::sin;
+
+fn main() {
+    // Equivalent to 'std::num::sin(1.0);'
+    sin(1.0);
+}
+~~~
+
+The Rust reference to [`use` declarations][use] also includes binding multiple paths with wildcard or glob syntax.
+
+[use]: http://doc.rust-lang.org/master/rust.html#use-declarations
 
 # Variables
 
