@@ -117,6 +117,38 @@ The Rust reference to [functions][functions].
 
 [functions]: http://doc.rust-lang.org/master/rust.html#functions
 
+# Implementations
+
+Implementations are method definitions of a [`trait`](#traits) for a particular type.
+
+~~~
+struct Point {
+    x: f64,
+    y: f64
+}
+
+struct Circle {
+    radius: f64,
+    center: Point,
+}
+
+impl Shape for Circle {
+    fn draw(&self, s: Surface) { do_draw_circle(s, *self); }
+    fn bounding_box(&self) -> BoundingBox {
+        let r = self.radius;
+        BoundingBox{x: self.center.x - r, y: self.center.y - r,
+         width: 2.0 * r, height: 2.0 * r}
+    }
+}
+
+let s = Circle(Point { x: 3.0, y: 7.0 }, 2.0);
+s.bounding_box();
+~~~
+
+Rust reference to trait [implementations][ref-implementations].
+
+[ref-implementations]: http://doc.rust-lang.org/master/rust.html#traits
+
 # Loops
 
 Looping over code is familiar to every programmer, in Rust this is achieved with the `loop` and `while` structures, the bodies of loop structures must be wrapped in braces, and the control condition of the `while` and `for` loops does not need to be wrapped in parentheses.
@@ -301,9 +333,24 @@ Run tests using `rustc --test foo.rs` and compile your program without the test 
 
 # Traits
 
-A trait describes a set of method types, and may include default implementations of methods, written in terms of some unknown [self type][self].
+A trait describes a set of methods, and may include default implementations of methods written in terms of an unknown [self type][self].
+
+This example `trait Shape` contains two methods, `draw` and `bounding_box`.
+
+~~~
+trait Shape {
+  fn draw(&self, Surface);
+  fn bounding_box(&self) -> BoundingBox;
+}
+~~~
+
+All values that have [implementations][implement] of this trait in scope can call `draw` and `bounding_box`, using `value.bounding_box()` syntax. See [implementations] for an example of a specific implementation of `Shape` for `Circle`. 
+
+The Rust reference to [`traits`][ref-traits].
 
 [self]: http://doc.rust-lang.org/master/rust.html#self-types
+[implement]: #implementations
+[ref-traits]: http://doc.rust-lang.org/master/rust.html#traits
 
 # Tuples
 
